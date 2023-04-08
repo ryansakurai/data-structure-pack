@@ -1,4 +1,6 @@
 /**
+ *  Array implementation of a stack
+ * 
  *  Author: Ryan Sakurai
  */
 
