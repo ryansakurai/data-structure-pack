@@ -61,7 +61,8 @@ bool get_top(Stack stack, T *output) {
     if(is_empty(stack))
         return false;
 
-    *output = stack.array[stack.first_empty_index - 1];
+    if(output)
+        *output = stack.array[stack.first_empty_index - 1];
     return true;
 }
 

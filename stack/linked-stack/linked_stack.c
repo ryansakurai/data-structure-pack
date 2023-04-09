@@ -47,7 +47,8 @@ bool get_top(Stack stack, T *output) {
     if(is_empty(stack))
         return false;
 
-    *output = stack.top->data;
+    if(output)
+        *output = stack.top->data;
     return true;
 }
 

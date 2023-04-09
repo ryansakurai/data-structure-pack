@@ -95,7 +95,8 @@ bool get_first(OrderedList list, T *output) {
     if(is_empty(list))
         return false;
 
-    *output = list.sentinel->next->data;
+    if(output)
+        *output = list.sentinel->next->data;
     return true;
 }
 
@@ -104,7 +105,8 @@ bool get_last(OrderedList list, T *output) {
     if(is_empty(list))
         return false;
 
-    *output = list.sentinel->prev->data;
+    if(output)
+        *output = list.sentinel->prev->data;
     return true;
 }
 
@@ -146,7 +148,8 @@ bool get_current_item(Iterator iter, T *output) {
     if(!is_in_range(iter))
         return false;
 
-    *output = iter.current_item->data;
+    if(output)
+        *output = iter.current_item->data;
     return true;
 }
 
@@ -156,7 +159,8 @@ bool pop_current_item(Iterator *iter, T *output) {
         return false;
 
     Node *old = iter->current_item;
-    *output = old->data;
+    if(output)
+        *output = old->data;
 
     old->prev->next = old->next;
     old->next->prev = old->prev;
