@@ -29,30 +29,26 @@ void push(Stack *stack, T data) {
 
 
 bool pop(Stack *stack, T *output) {
-    if(!is_empty(*stack)) {
-        if(output)
-            *output = stack->top->data;
-
-        Node *old_top = stack->top;
-        stack->top = stack->top->below;
-        free(old_top);
-
-        return true;
-    }
-    else {
+    if(is_empty(*stack))
         return false;
-    }
+
+    Node *old = stack->top;
+    if(output)
+        *output = stack->top->data;
+
+    stack->top = stack->top->below;
+    free(old);
+
+    return true;
 }
 
 
 bool get_top(Stack stack, T *output) {
-    if(!is_empty(stack)) {
-        *output = stack.top->data;
-        return true;
-    }
-    else {
+    if(is_empty(stack))
         return false;
-    }
+
+    *output = stack.top->data;
+    return true;
 }
 
 
