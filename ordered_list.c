@@ -1,4 +1,6 @@
 /**
+ *  Linked implementation of an ordered list
+ * 
  *  Author: Ryan Sakurai
  */
 
@@ -28,95 +30,82 @@ bool end_reached(Iterator iter) {
 
 
 void push(OrderedList *list, T data) {
-    Node *new_node = malloc(sizeof(Node));
-    new_node->data = data;
+    Node *new = malloc(sizeof(Node));
+    new->data = data;
 
     Iterator iter;
     if(iter_init(&iter, list)) {
-        while((*list->move_past)(&new_node->data, &iter.current_item->data) && iter_next(&iter));
+        while((*list->move_past)(&new->data, &iter.current_item->data) && iter_next(&iter));
 
-        if(end_reached(iter) && (*list->move_past)(&new_node->data, &iter.current_item->data)) {
-            // places after current_item
-            new_node->prev = iter.current_item;
-            new_node->next = iter.current_item->next;
-            new_node->next->prev = new_node;
-            new_node->prev->next = new_node;
+        if(end_reached(iter) && (*list->move_past)(&new->data, &iter.current_item->data)) {
+            // place after current_item
+            new->prev = iter.current_item;
+            new->next = iter.current_item->next;
         }
         else {
-            // places before current_item
-            new_node->prev = iter.current_item->prev;
-            new_node->next = iter.current_item;
-            new_node->next->prev = new_node;
-            new_node->prev->next = new_node;
+            // place before current_item
+            new->prev = iter.current_item->prev;
+            new->next = iter.current_item;
         }
     }
     else {
-        new_node->next = new_node->prev = list->sentinel;
-        new_node->next->prev = new_node;
-        new_node->prev->next = new_node;
+        new->next = new->prev = list->sentinel;
     }
-    
+
+    new->next->prev = new->prev->next = new;
     list->size++;
 }
 
 
 bool pop_first(OrderedList *list, T *output) {
-    if(!is_empty(*list)) {
-        Node *popped = list->sentinel->next;
-        if(output)
-            *output = popped->data;
-
-        list->sentinel->next = popped->next;
-        list->sentinel->next->prev = list->sentinel;
-        free(popped);
-        list->size--;
-
-        return true;
-    }
-    else {
+    if(is_empty(*list))
         return false;
-    }
+
+    Node *old = list->sentinel->next;
+    if(output)
+        *output = old->data;
+
+    list->sentinel->next = old->next;
+    list->sentinel->next->prev = list->sentinel;
+    free(old);
+    list->size--;
+
+    return true;
 }
 
 
 bool pop_last(OrderedList *list, T *output) {
-    if(!is_empty(*list)) {
-        Node *popped = list->sentinel->prev;
-        if(output)
-            *output = popped->data;
-
-        list->sentinel->prev = popped->prev;
-        list->sentinel->prev->next = list->sentinel;
-        free(popped);
-        list->size--;
-
-        return true;
-    }
-    else {
+    if(is_empty(*list))
         return false;
-    }
+
+    Node *old = list->sentinel->prev;
+    if(output)
+        *output = old->data;
+
+    list->sentinel->prev = old->prev;
+    list->sentinel->prev->next = list->sentinel;
+    free(old);
+    list->size--;
+
+    return true;
 }
 
 
 bool get_first(OrderedList list, T *output) {
-    if(!is_empty(list)) {
-        *output = list.sentinel->next->data;
-        return true;
-    }
-    else {
+    if(is_empty(list))
         return false;
-    }
+
+    *output = list.sentinel->next->data;
+    return true;
 }
 
 
 bool get_last(OrderedList list, T *output) {
-    if(!is_empty(list)) {
-        *output = list.sentinel->prev->data;
-        return true;
-    }
-    else {
+    if(is_empty(list))
         return false;
-    }
+
+    *output = list.sentinel->prev->data;
+    return true;
 }
 
 
@@ -131,25 +120,21 @@ bool is_empty(OrderedList list) {
 
 
 bool iter_init(Iterator *iter, OrderedList *list) {
-    if(!is_empty(*list)) {
-        iter->list = list;
-        iter->current_item = list->sentinel->next;
-        return true;
-    }
-    else {
+    if(is_empty(*list))
         return false;
-    }
+
+    iter->list = list;
+    iter->current_item = list->sentinel->next;
+    return true;
 }
 
 
 bool iter_next(Iterator *iter) {
-    if(!end_reached(*iter)) {
-        iter->current_item = iter->current_item->next;
-        return true;
-    }
-    else {
+    if(end_reached(*iter))
         return false;
-    }
+
+    iter->current_item = iter->current_item->next;
+    return true;
 }
 
 bool is_in_range(Iterator iter) {
@@ -158,32 +143,28 @@ bool is_in_range(Iterator iter) {
 
 
 bool get_current_item(Iterator iter, T *output) {
-    if(is_in_range(iter)) {
-        *output = iter.current_item->data;
-        return true;
-    }
-    else {
+    if(!is_in_range(iter))
         return false;
-    }
+
+    *output = iter.current_item->data;
+    return true;
 }
 
 
 bool pop_current_item(Iterator *iter, T *output) {
-    if(is_in_range(*iter)) {
-        Node *popped = iter->current_item;
-        *output = popped->data;
-
-        popped->prev->next = popped->next;
-        popped->next->prev = popped->prev;
-        iter->current_item = iter->current_item->next;
-        free(popped);
-        iter->list->size--;
-
-        return true;
-    }
-    else {
+    if(!is_in_range(*iter))
         return false;
-    }
+
+    Node *old = iter->current_item;
+    *output = old->data;
+
+    old->prev->next = old->next;
+    old->next->prev = old->prev;
+    iter->current_item = iter->current_item->next;
+    free(old);
+    iter->list->size--;
+
+    return true;
 }
 
 

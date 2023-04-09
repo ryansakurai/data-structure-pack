@@ -1,4 +1,6 @@
 /**
+ *  Linked implementation of an ordered list
+ * 
  *  Author: Ryan Sakurai
  */
 
