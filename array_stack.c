@@ -41,33 +41,28 @@ bool is_array_too_big(Stack stack) {
 
 
 bool pop(Stack *stack, T *output) {
-    if(!is_empty(*stack)) {
-        if(output)
-            *output = stack->array[stack->first_empty_index - 1];
-
-        stack->first_empty_index--;
-
-        if(is_array_too_big(*stack)) {
-            stack->array_size /= 2;
-            stack->array = realloc(stack->array, stack->array_size * sizeof(T));
-        }
-
-        return true;
-    }
-    else {
+    if(is_empty(*stack))
         return false;
+
+    if(output)
+        *output = stack->array[stack->first_empty_index - 1];
+    stack->first_empty_index--;
+
+    if(is_array_too_big(*stack)) {
+        stack->array_size /= 2;
+        stack->array = realloc(stack->array, stack->array_size * sizeof(T));
     }
+
+    return true;
 }
 
 
 bool get_top(Stack stack, T *output) {
-    if(!is_empty(stack)) {
-        *output = stack.array[stack.first_empty_index - 1];
-        return true;
-    }
-    else {
+    if(is_empty(stack))
         return false;
-    }
+
+    *output = stack.array[stack.first_empty_index - 1];
+    return true;
 }
 
 
