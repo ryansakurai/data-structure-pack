@@ -8,7 +8,7 @@
 
 
 void init(OrderedList *list, bool (*move_past)(void *a, void *b)) {
-    list->sentinel = malloc(sizeof(Node));
+    list->sentinel = malloc(sizeof(OLNode));
     list->sentinel->prev = list->sentinel->next = list->sentinel;
     list->size = 0;
     list->move_past = move_past;
@@ -24,16 +24,16 @@ void destroy(OrderedList *list) {
 }
 
 
-bool end_reached(Iterator iter) {
+bool end_reached(OLIterator iter) {
     return iter.current_item->next == iter.list->sentinel;
 }
 
 
 void push(OrderedList *list, T data) {
-    Node *new = malloc(sizeof(Node));
+    OLNode *new = malloc(sizeof(OLNode));
     new->data = data;
 
-    Iterator iter;
+    OLIterator iter;
     if(iter_init(&iter, list)) {
         while((*list->move_past)(&new->data, &iter.current_item->data) && iter_next(&iter));
 
@@ -61,7 +61,7 @@ bool pop_first(OrderedList *list, T *output) {
     if(is_empty(*list))
         return false;
 
-    Node *old = list->sentinel->next;
+    OLNode *old = list->sentinel->next;
     if(output)
         *output = old->data;
 
@@ -78,7 +78,7 @@ bool pop_last(OrderedList *list, T *output) {
     if(is_empty(*list))
         return false;
 
-    Node *old = list->sentinel->prev;
+    OLNode *old = list->sentinel->prev;
     if(output)
         *output = old->data;
 
@@ -121,7 +121,7 @@ bool is_empty(OrderedList list) {
 }
 
 
-bool iter_init(Iterator *iter, OrderedList *list) {
+bool iter_init(OLIterator *iter, OrderedList *list) {
     if(is_empty(*list))
         return false;
 
@@ -131,7 +131,7 @@ bool iter_init(Iterator *iter, OrderedList *list) {
 }
 
 
-bool iter_next(Iterator *iter) {
+bool iter_next(OLIterator *iter) {
     if(end_reached(*iter))
         return false;
 
@@ -139,12 +139,12 @@ bool iter_next(Iterator *iter) {
     return true;
 }
 
-bool is_in_range(Iterator iter) {
+bool is_in_range(OLIterator iter) {
     return iter.current_item != iter.list->sentinel;
 }
 
 
-bool get_current_item(Iterator iter, T *output) {
+bool get_current_item(OLIterator iter, T *output) {
     if(!is_in_range(iter))
         return false;
 
@@ -154,11 +154,11 @@ bool get_current_item(Iterator iter, T *output) {
 }
 
 
-bool pop_current_item(Iterator *iter, T *output) {
+bool pop_current_item(OLIterator *iter, T *output) {
     if(!is_in_range(*iter))
         return false;
 
-    Node *old = iter->current_item;
+    OLNode *old = iter->current_item;
     if(output)
         *output = old->data;
 
@@ -172,8 +172,8 @@ bool pop_current_item(Iterator *iter, T *output) {
 }
 
 
-bool search(Iterator *iter, bool (*equals)(void *a, void *b), T key) {
-    Iterator private_iter;
+bool search(OLIterator *iter, bool (*equals)(void *a, void *b), T key) {
+    OLIterator private_iter;
     if(iter_init(&private_iter, iter->list))
         do {
             if((*equals)(&key, &private_iter.current_item->data)) {

@@ -12,23 +12,22 @@
 
 typedef int T;
 
-
-typedef struct Node {
+typedef struct OLNode {
     T data;
-    struct Node *prev;
-    struct Node *next;
-} Node;
+    struct OLNode *prev;
+    struct OLNode *next;
+} OLNode;
 
 typedef struct OrderedList {
-    Node *sentinel;
+    OLNode *sentinel;
     unsigned size;
     bool (*move_past)(void *a, void *b);
 } OrderedList;
 
-typedef struct Iterator {
+typedef struct OLIterator {
     OrderedList *list;
-    Node *current_item;
-} Iterator;
+    OLNode *current_item;
+} OLIterator;
 
 
 /**
@@ -146,55 +145,55 @@ bool is_empty(OrderedList list);
  * Initializes the iterator in a list
  * 
  * Parameters
- * - Iterator *iter
+ * - OLIterator *iter
  * - OrderedList *list: list the iterator will point to
  * 
  * Returns: bool
  * - True if it was possible to initialize it
  * - False if the list is empty and it wasn't possible
  */
-bool iter_init(Iterator *iter, OrderedList *list);
+bool iter_init(OLIterator *iter, OrderedList *list);
 
 
 /**
  * Moves the iterator to the next item in the list
  * 
  * Parameters
- * - Iterator *iter
+ * - OLIterator *iter
  * 
  * Returns: bool
  * - True if it was possible
  * - False if the end of the list was reached and it wasn't possible
  */
-bool iter_next(Iterator *iter);
+bool iter_next(OLIterator *iter);
 
 
 /**
  * Stores the item currently being pointed by the iterator in a variable
  * 
  * Parameters
- * - Iterator iter
+ * - OLIterator iter
  * - T *output - variable where the item is going to be stored
  * 
  * Returns: bool
  * - True, if it was possible to get the item
  * - False, if the iterator isn't pointing to an item and it wasn't possible
  */
-bool get_current_item(Iterator iter, T *output);
+bool get_current_item(OLIterator iter, T *output);
 
 
 /**
  * Pops and stores the item currently being pointed by the iterator in a variable
  * 
  * Parameters
- * - Iterator *iter
+ * - OLIterator *iter
  * - T *output: variable where the item is going to be stored
  * 
  * Returns: bool
  * - True, if it was possible to pop the item
  * - False, if the iterator isn't pointing to an item and it wasn't possible
  */
-bool pop_current_item(Iterator *iter, T *output);
+bool pop_current_item(OLIterator *iter, T *output);
 
 
 /**
@@ -208,7 +207,7 @@ bool pop_current_item(Iterator *iter, T *output);
  * Returns: bool
  * - If it was possible to find it
  */
-bool search(Iterator *iter, bool (*equals)(void *a, void *b), T key);
+bool search(OLIterator *iter, bool (*equals)(void *a, void *b), T key);
 
 
 #endif
