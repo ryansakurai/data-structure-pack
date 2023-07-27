@@ -6,20 +6,17 @@
 
 #include "deque.h"
 
-
 void d_init(Deque *deque) {
     deque->sentinel = malloc(sizeof(DNode));
     deque->sentinel->prev = deque->sentinel->next = deque->sentinel;
     deque->size = 0;
 }
 
-
 void d_destroy(Deque *deque) {
     while(d_pop_first(deque, NULL));
     free(deque->sentinel);
     deque->sentinel = NULL;
 }
-
 
 void d_push_first(Deque *deque, T data) {
     DNode *new = malloc(sizeof(DNode));
@@ -31,7 +28,6 @@ void d_push_first(Deque *deque, T data) {
     deque->size++;
 }
 
-
 void d_push_last(Deque *deque, T data) {
     DNode *new = malloc(sizeof(DNode));
     new->data = data;
@@ -41,7 +37,6 @@ void d_push_last(Deque *deque, T data) {
 
     deque->size++;
 }
-
 
 bool d_pop_first(Deque *deque, T *output) {
     if(d_is_empty(*deque))
@@ -59,7 +54,6 @@ bool d_pop_first(Deque *deque, T *output) {
     return true;
 }
 
-
 bool d_pop_last(Deque *deque, T *output) {
     if(d_is_empty(*deque))
         return false;
@@ -76,7 +70,6 @@ bool d_pop_last(Deque *deque, T *output) {
     return true;
 }
 
-
 bool d_get_first(Deque deque, T *output) {
     if(d_is_empty(deque))
         return false;
@@ -85,7 +78,6 @@ bool d_get_first(Deque deque, T *output) {
         *output = deque.sentinel->next->data;
     return true;
 }
-
 
 bool d_get_last(Deque deque, T *output) {
     if(d_is_empty(deque))
@@ -96,11 +88,9 @@ bool d_get_last(Deque deque, T *output) {
     return true;
 }
 
-
 unsigned d_get_size(Deque deque) {
     return deque.size;
 }
-
 
 bool d_is_empty(Deque deque) {
     return d_get_size(deque) <= 0;
