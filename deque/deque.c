@@ -103,5 +103,5 @@ unsigned d_get_size(Deque deque) {
 
 
 bool d_is_empty(Deque deque) {
-    return d_get_size(deque) == 0;
+    return d_get_size(deque) <= 0;
 }
