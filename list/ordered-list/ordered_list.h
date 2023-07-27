@@ -29,7 +29,6 @@ typedef struct OLIterator {
     OLNode *current_item;
 } OLIterator;
 
-
 /**
  * Initializes the list
  * 
@@ -39,8 +38,7 @@ typedef struct OLIterator {
  * 
  * Returns: void
  */
-void init(OrderedList *list, bool (*move_past)(void *a, void *b));
-
+void ol_init(OrderedList *list, bool (*move_past)(void *a, void *b));
 
 /**
  * Destroys the list
@@ -50,8 +48,7 @@ void init(OrderedList *list, bool (*move_past)(void *a, void *b));
  * 
  * Returns: void
  */
-void destroy(OrderedList *list);
-
+void ol_destroy(OrderedList *list);
 
 /**
  * Pushes an item to the list, following its order
@@ -62,8 +59,7 @@ void destroy(OrderedList *list);
  * 
  * Returns: void
  */
-void push(OrderedList *list, T data);
-
+void ol_push(OrderedList *list, T data);
 
 /**
  * Pops the first item off the list and stores it in a variable
@@ -75,8 +71,7 @@ void push(OrderedList *list, T data);
  * Returns: bool
  * - If it was possible to pop an item
  */
-bool pop_first(OrderedList *list, T *output);
-
+bool ol_pop_first(OrderedList *list, T *output);
 
 /**
  * Pops the last item off the list and stores it in a variable
@@ -88,8 +83,7 @@ bool pop_first(OrderedList *list, T *output);
  * Returns: bool
  * - If it was possible to pop an item
  */
-bool pop_last(OrderedList *list, T *output);
-
+bool ol_pop_last(OrderedList *list, T *output);
 
 /**
  * Stores the first item of the list in a variable
@@ -101,8 +95,7 @@ bool pop_last(OrderedList *list, T *output);
  * Returns: bool
  * - If it was possible to get the item
  */
-bool get_first(OrderedList list, T *output);
-
+bool ol_get_first(OrderedList list, T *output);
 
 /**
  * Stores the last item of the list in a variable
@@ -114,8 +107,7 @@ bool get_first(OrderedList list, T *output);
  * Returns: bool
  * - If it was possible to get the item
  */
-bool get_last(OrderedList list, T *output);
-
+bool ol_get_last(OrderedList list, T *output);
 
 /**
  * Returns the size of the list
@@ -126,8 +118,7 @@ bool get_last(OrderedList list, T *output);
  * Returns: unsigned
  * - The size of the list
  */
-unsigned get_size(OrderedList list);
-
+unsigned ol_get_size(OrderedList list);
 
 /**
  * Returns if the list is empty
@@ -138,8 +129,7 @@ unsigned get_size(OrderedList list);
  * Returns: bool
  * - If the list is empty
  */
-bool is_empty(OrderedList list);
-
+bool ol_is_empty(OrderedList list);
 
 /**
  * Initializes the iterator in a list
@@ -152,8 +142,7 @@ bool is_empty(OrderedList list);
  * - True if it was possible to initialize it
  * - False if the list is empty and it wasn't possible
  */
-bool iter_init(OLIterator *iter, OrderedList *list);
-
+bool ol_iter_init(OLIterator *iter, OrderedList *list);
 
 /**
  * Moves the iterator to the next item in the list
@@ -165,8 +154,7 @@ bool iter_init(OLIterator *iter, OrderedList *list);
  * - True if it was possible
  * - False if the end of the list was reached and it wasn't possible
  */
-bool iter_next(OLIterator *iter);
-
+bool ol_iter_next(OLIterator *iter);
 
 /**
  * Stores the item currently being pointed by the iterator in a variable
@@ -179,8 +167,7 @@ bool iter_next(OLIterator *iter);
  * - True, if it was possible to get the item
  * - False, if the iterator isn't pointing to an item and it wasn't possible
  */
-bool get_current_item(OLIterator iter, T *output);
-
+bool ol_get_current_item(OLIterator iter, T *output);
 
 /**
  * Pops and stores the item currently being pointed by the iterator in a variable
@@ -193,8 +180,7 @@ bool get_current_item(OLIterator iter, T *output);
  * - True, if it was possible to pop the item
  * - False, if the iterator isn't pointing to an item and it wasn't possible
  */
-bool pop_current_item(OLIterator *iter, T *output);
-
+bool ol_pop_current_item(OLIterator *iter, T *output);
 
 /**
  * Moves the iterator to a certain item, if it's possible to find it
@@ -207,7 +193,6 @@ bool pop_current_item(OLIterator *iter, T *output);
  * Returns: bool
  * - If it was possible to find it
  */
-bool search(OLIterator *iter, bool (*equals)(void *a, void *b), T key);
-
+bool ol_search(OLIterator *iter, bool (*equals)(void *a, void *b), T key);
 
 #endif

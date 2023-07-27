@@ -6,38 +6,39 @@
 
 #include "ordered_list.h"
 
+bool __end_reached(OLIterator iter) {
+    return iter.current_item->next == iter.list->sentinel;
+}
 
-void init(OrderedList *list, bool (*move_past)(void *a, void *b)) {
+bool __is_in_range(OLIterator iter) {
+    return iter.current_item != iter.list->sentinel;
+}
+
+void ol_init(OrderedList *list, bool (*move_past)(void *a, void *b)) {
     list->sentinel = malloc(sizeof(OLNode));
     list->sentinel->prev = list->sentinel->next = list->sentinel;
     list->size = 0;
     list->move_past = move_past;
 }
 
-
-void destroy(OrderedList *list) {
-    while(!is_empty(*list))
-        pop_first(list, NULL);
+void ol_destroy(OrderedList *list) {
+    while(!ol_is_empty(*list))
+        ol_pop_first(list, NULL);
     
     free(list->sentinel);
     list->sentinel = NULL;
+    list->move_past = NULL;
 }
 
-
-bool end_reached(OLIterator iter) {
-    return iter.current_item->next == iter.list->sentinel;
-}
-
-
-void push(OrderedList *list, T data) {
+void ol_push(OrderedList *list, T data) {
     OLNode *new = malloc(sizeof(OLNode));
     new->data = data;
 
     OLIterator iter;
-    if(iter_init(&iter, list)) {
-        while((*list->move_past)(&new->data, &iter.current_item->data) && iter_next(&iter));
+    if(ol_iter_init(&iter, list)) {
+        while((*list->move_past)(&new->data, &iter.current_item->data) && ol_iter_next(&iter));
 
-        if(end_reached(iter) && (*list->move_past)(&new->data, &iter.current_item->data)) {
+        if(__end_reached(iter) && (*list->move_past)(&new->data, &iter.current_item->data)) {
             // place after current_item
             new->prev = iter.current_item;
             new->next = iter.current_item->next;
@@ -56,9 +57,8 @@ void push(OrderedList *list, T data) {
     list->size++;
 }
 
-
-bool pop_first(OrderedList *list, T *output) {
-    if(is_empty(*list))
+bool ol_pop_first(OrderedList *list, T *output) {
+    if(ol_is_empty(*list))
         return false;
 
     OLNode *old = list->sentinel->next;
@@ -73,9 +73,8 @@ bool pop_first(OrderedList *list, T *output) {
     return true;
 }
 
-
-bool pop_last(OrderedList *list, T *output) {
-    if(is_empty(*list))
+bool ol_pop_last(OrderedList *list, T *output) {
+    if(ol_is_empty(*list))
         return false;
 
     OLNode *old = list->sentinel->prev;
@@ -90,9 +89,8 @@ bool pop_last(OrderedList *list, T *output) {
     return true;
 }
 
-
-bool get_first(OrderedList list, T *output) {
-    if(is_empty(list))
+bool ol_get_first(OrderedList list, T *output) {
+    if(ol_is_empty(list))
         return false;
 
     if(output)
@@ -100,9 +98,8 @@ bool get_first(OrderedList list, T *output) {
     return true;
 }
 
-
-bool get_last(OrderedList list, T *output) {
-    if(is_empty(list))
+bool ol_get_last(OrderedList list, T *output) {
+    if(ol_is_empty(list))
         return false;
 
     if(output)
@@ -110,19 +107,16 @@ bool get_last(OrderedList list, T *output) {
     return true;
 }
 
-
-unsigned get_size(OrderedList list) {
+unsigned ol_get_size(OrderedList list) {
     return list.size;
 }
 
-
-bool is_empty(OrderedList list) {
+bool ol_is_empty(OrderedList list) {
     return list.size <= 0;
 }
 
-
-bool iter_init(OLIterator *iter, OrderedList *list) {
-    if(is_empty(*list))
+bool ol_iter_init(OLIterator *iter, OrderedList *list) {
+    if(ol_is_empty(*list))
         return false;
 
     iter->list = list;
@@ -130,22 +124,16 @@ bool iter_init(OLIterator *iter, OrderedList *list) {
     return true;
 }
 
-
-bool iter_next(OLIterator *iter) {
-    if(end_reached(*iter))
+bool ol_iter_next(OLIterator *iter) {
+    if(__end_reached(*iter))
         return false;
 
     iter->current_item = iter->current_item->next;
     return true;
 }
 
-bool is_in_range(OLIterator iter) {
-    return iter.current_item != iter.list->sentinel;
-}
-
-
-bool get_current_item(OLIterator iter, T *output) {
-    if(!is_in_range(iter))
+bool ol_get_current_item(OLIterator iter, T *output) {
+    if(!__is_in_range(iter))
         return false;
 
     if(output)
@@ -153,9 +141,8 @@ bool get_current_item(OLIterator iter, T *output) {
     return true;
 }
 
-
-bool pop_current_item(OLIterator *iter, T *output) {
-    if(!is_in_range(*iter))
+bool ol_pop_current_item(OLIterator *iter, T *output) {
+    if(!__is_in_range(*iter))
         return false;
 
     OLNode *old = iter->current_item;
@@ -171,16 +158,15 @@ bool pop_current_item(OLIterator *iter, T *output) {
     return true;
 }
 
-
-bool search(OLIterator *iter, bool (*equals)(void *a, void *b), T key) {
+bool ol_search(OLIterator *iter, bool (*equals)(void *a, void *b), T key) {
     OLIterator private_iter;
-    if(iter_init(&private_iter, iter->list))
+    if(ol_iter_init(&private_iter, iter->list))
         do {
             if((*equals)(&key, &private_iter.current_item->data)) {
                 iter->current_item = private_iter.current_item;
                 return true;
             }
-        } while(iter_next(&private_iter));
+        } while(ol_iter_next(&private_iter));
 
     return false;
 }
