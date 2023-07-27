@@ -12,18 +12,16 @@
 
 typedef int T;
 
-
-typedef struct Node {
+typedef struct QNode {
     T data;
-    struct Node *prev;
-    struct Node *next;
-} Node;
+    struct QNode *prev;
+    struct QNode *next;
+} QNode;
 
 typedef struct Queue {
-    Node *sentinel;
+    QNode *sentinel;
     unsigned size;
 } Queue;
-
 
 /**
  * Initializes the queue
@@ -33,8 +31,7 @@ typedef struct Queue {
  * 
  * Returns: void
  */
-void init(Queue *queue);
-
+void q_init(Queue *queue);
 
 /**
  * Destroys the queue
@@ -44,8 +41,7 @@ void init(Queue *queue);
  * 
  * Returns: void
  */
-void destroy(Queue *queue);
-
+void q_destroy(Queue *queue);
 
 /**
  * Pushes an item to the queue
@@ -56,8 +52,7 @@ void destroy(Queue *queue);
  * 
  * Returns: void
  */
-void push(Queue *queue, T data);
-
+void q_push(Queue *queue, T data);
 
 /**
  * Pops the an item from the queue and stores it in a variable
@@ -69,8 +64,7 @@ void push(Queue *queue, T data);
  * Returns: bool
  * - If it was possible to pop an item
  */
-bool pop(Queue *queue, T *output);
-
+bool q_pop(Queue *queue, T *output);
 
 /**
  * Stores the first item of the queue in a variable
@@ -82,8 +76,7 @@ bool pop(Queue *queue, T *output);
  * Returns: bool
  * - If it was possible to get the item
  */
-bool get_first(Queue queue, T *output);
-
+bool q_get_first(Queue queue, T *output);
 
 /**
  * Returns the size of the queue
@@ -94,8 +87,7 @@ bool get_first(Queue queue, T *output);
  * Returns: unsigned
  * - The size of the queue
  */
-unsigned get_size(Queue queue);
-
+unsigned q_get_size(Queue queue);
 
 /**
  * Returns if the queue is empty
@@ -106,7 +98,6 @@ unsigned get_size(Queue queue);
  * Returns: bool
  * - If the queue is empty
  */
-bool is_empty(Queue queue);
-
+bool q_is_empty(Queue queue);
 
 #endif

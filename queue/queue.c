@@ -6,15 +6,13 @@
 
 #include "queue.h"
 
-
-void init(Queue *queue) {
-    queue->sentinel = malloc(sizeof(Node));
+void q_init(Queue *queue) {
+    queue->sentinel = malloc(sizeof(QNode));
     queue->sentinel->prev = queue->sentinel->next = queue->sentinel;
     queue->size = 0;
 }
 
-
-void destroy(Queue *queue) {
+void q_destroy(Queue *queue) {
     while(!is_empty(*queue))
         pop(queue, NULL);
     
@@ -22,9 +20,8 @@ void destroy(Queue *queue) {
     queue->sentinel = NULL;
 }
 
-
-void push(Queue *queue, T data) {
-    Node *new = malloc(sizeof(Node));
+void q_push(Queue *queue, T data) {
+    QNode *new = malloc(sizeof(QNode));
     new->data = data;
     new->prev = queue->sentinel->prev;
     new->next = queue->sentinel;
@@ -33,12 +30,11 @@ void push(Queue *queue, T data) {
     queue->size++;
 }
 
-
-bool pop(Queue *queue, T *output) {
+bool q_pop(Queue *queue, T *output) {
     if(is_empty(*queue))
         return false;
 
-    Node *old = queue->sentinel->next;
+    QNode *old = queue->sentinel->next;
     if(output)
         *output = old->data;
 
@@ -49,8 +45,7 @@ bool pop(Queue *queue, T *output) {
     return true;
 }
 
-
-bool get_first(Queue queue, T *output) {
+bool q_get_first(Queue queue, T *output) {
     if(is_empty(queue))
         return false;
 
@@ -59,12 +54,10 @@ bool get_first(Queue queue, T *output) {
     return true;
 }
 
-
-unsigned get_size(Queue queue) {
+unsigned q_get_size(Queue queue) {
     return queue.size;
 }
 
-
-bool is_empty(Queue queue) {
+bool q_is_empty(Queue queue) {
     return get_size(queue) <= 0;
 }
