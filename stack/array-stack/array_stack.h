@@ -12,98 +12,88 @@
 
 typedef int T;
 
-
-typedef struct Stack
-{
+typedef struct ArrayStack {
     T *array;
-    unsigned first_empty_index;
-    unsigned array_size;
-} Stack;
-
+    unsigned size;
+    unsigned allocation;
+} ArrayStack;
 
 /**
  * Initializes the stack
  * 
  * Parameters
- * - Stack *stack
+ * - ArrayStack *stack
  * 
  * Returns: void
  */
-void init(Stack *stack);
-
+void as_init(ArrayStack *stack);
 
 /**
  * Destroys the stack
  * 
  * Parameters
- * - Stack *stack
+ * - ArrayStack *stack
  * 
  * Returns: void
  */
-void destroy(Stack *stack);
-
+void as_destroy(ArrayStack *stack);
 
 /**
- * Pushes an item to the list
+ * Pushes an item to the stack
  * 
  * Parameters
- * - Stack *stack
+ * - ArrayStack *stack
  * - T data: item to be pushed
  * 
  * Returns: void
  */
-void push(Stack *stack, T data);
-
+void as_push(ArrayStack *stack, T data);
 
 /**
- * Pops an item and stores it in a variable
+ * Pops the top item of the stack and stores it in a variable
  * 
  * Parameters
- * - Stack *stack
- * - T *output: variable where the item will be stored
+ * - ArrayStack *stack
+ * - T *output: variable where the item will be stored (can be NULL)
  * 
  * Returns: bool
- * - If it was possible to pop an item
+ * - If it was possible to pop the item
  */
-bool pop(Stack *stack, T *output);
-
+bool as_pop(ArrayStack *stack, T *output);
 
 /**
  * Stores the top item of the stack in a variable
  * 
  * Parameters
- * - Stack stack
+ * - ArrayStack stack
  * - T *output: variable where the item will be stored
  * 
  * Returns: bool
  * - True if it was possible to get the item
  * - False if the stack is empty and it wasn't possible
  */
-bool get_top(Stack stack, T *output);
-
+bool as_get_top(ArrayStack stack, T *output);
 
 /**
  * Returns the size of the stack
  * 
  * Parameters
- * - Stack stack
+ * - ArrayStack stack
  * 
  * Returns: unsigned
  * - The size of the stack
  */
-unsigned get_size(Stack stack);
-
+unsigned as_get_size(ArrayStack stack);
 
 /**
  * Returns if the stack is empty
  * 
  * Parameters
- * - Stack stack
+ * - ArrayStack stack
  * 
  * Returns: bool
  * - If the stack is empty
  */
-bool is_empty(Stack stack);
-
+bool as_is_empty(ArrayStack stack);
 
 #endif
