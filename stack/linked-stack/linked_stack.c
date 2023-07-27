@@ -6,33 +6,29 @@
 
 #include "linked_stack.h"
 
-
-void init(Stack *stack) {
+void ls_init(LinkedStack *stack) {
     stack->top = NULL;
     stack->size = 0;
 }
 
-
-void destroy(Stack *stack) {
-    while(!is_empty(*stack))
-        pop(stack, NULL);
+void ls_destroy(LinkedStack *stack) {
+    while(!ls_is_empty(*stack))
+        ls_pop(stack, NULL);
 }
 
-
-void push(Stack *stack, T data) {
-    Node *new = malloc(sizeof(Node));
+void ls_push(LinkedStack *stack, T data) {
+    LSNode *new = malloc(sizeof(LSNode));
     new->data = data;
     new->below = stack->top;
     stack->top = new;
     stack->size++;
 }
 
-
-bool pop(Stack *stack, T *output) {
-    if(is_empty(*stack))
+bool ls_pop(LinkedStack *stack, T *output) {
+    if(ls_is_empty(*stack))
         return false;
 
-    Node *old = stack->top;
+    LSNode *old = stack->top;
     if(output)
         *output = stack->top->data;
 
@@ -42,9 +38,8 @@ bool pop(Stack *stack, T *output) {
     return true;
 }
 
-
-bool get_top(Stack stack, T *output) {
-    if(is_empty(stack))
+bool ls_get_top(LinkedStack stack, T *output) {
+    if(ls_is_empty(stack))
         return false;
 
     if(output)
@@ -52,12 +47,10 @@ bool get_top(Stack stack, T *output) {
     return true;
 }
 
-
-unsigned get_size(Stack stack) {
+unsigned ls_get_size(LinkedStack stack) {
     return stack.size;
 }
 
-
-bool is_empty(Stack stack) {
-    return get_size(stack) <= 0;
+bool ls_is_empty(LinkedStack stack) {
+    return ls_get_size(stack) <= 0;
 }
