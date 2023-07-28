@@ -217,17 +217,4 @@ bool ll_push_after_current_item(LLIterator *iter, T data);
  */
 bool ll_pop_current_item(LLIterator *iter, T *output);
 
-/**
- * Moves the iterator to a certain item, if it's possible to find it
- * 
- * Parameters
- * - LinkedList *iter
- * - bool (*equals)(void *a, void *b): function used to find the item
- * - T key: key to be searched for
- * 
- * Returns: bool
- * - If it was possible to find it
- */
-bool ll_search(LLIterator *iter, bool (*equals)(void *a, void *b), T key);
-
 #endif

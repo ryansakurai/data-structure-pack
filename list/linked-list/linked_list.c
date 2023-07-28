@@ -170,16 +170,3 @@ bool ll_pop_current_item(LLIterator *iter, T *output) {
 
     return true;
 }
-
-bool ll_search(LLIterator *iter, bool (*equals)(void *a, void *b), T key) {
-    LLIterator private_iter;
-    if(ll_iter_init(&private_iter, iter->list))
-        do {
-            if((*equals)(&key, &private_iter.current_item->data)) {
-                iter->current_item = private_iter.current_item;
-                return true;
-            }
-        } while(ll_iter_next(&private_iter));
-
-    return false;
-}
