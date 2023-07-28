@@ -1,14 +1,14 @@
 /**
- *  Array implementation of a heap (priority heap)
+ *  Array implementation of a min heap (priority heap)
  * 
  *  Author: Ryan Sakurai
  */
 
-#include "heap.h"
+#include "max_heap.h"
 
 #define MIN_ALLOC 1
 
-void __set_size(Heap *heap, unsigned size) {
+void __set_size(MaxHeap *heap, unsigned size) {
     heap->size = size;
 
     while(size > heap->allocation)
@@ -19,7 +19,7 @@ void __set_size(Heap *heap, unsigned size) {
     heap->array = realloc(heap->array, heap->allocation * sizeof(T));
 }
 
-void __swap(Heap *heap, unsigned index_a, unsigned index_b) {
+void __swap(MaxHeap *heap, unsigned index_a, unsigned index_b) {
     T temp = heap->array[index_a];
     heap->array[index_a] = heap->array[index_b];
     heap->array[index_b] = temp;
@@ -37,31 +37,32 @@ unsigned __rchild_idx(unsigned index) {
     return index*2+2;
 }
 
-void h_init(Heap *heap) {
+void maxh_init(MaxHeap *heap, int (*compare)(T a, T b)) {
     heap->array = malloc(MIN_ALLOC * sizeof(T));
+    heap->compare = compare;
     heap->allocation = MIN_ALLOC;
     heap->size = 0;
 }
 
-void h_destroy(Heap *heap) {
+void maxh_destroy(MaxHeap *heap) {
     free(heap->array);
     heap->array = NULL;
+    heap->compare = NULL;
     heap->size = 0;
     heap->allocation = 0;
 }
 
-void h_push(Heap *heap, T data) {
-    __set_size(heap, heap->size + 1);
+void maxh_push(MaxHeap *heap, T data) {
+    __set_size(heap, heap->size+1);
     heap->array[heap->size - 1] = data;
 
     //fix heap
-    for(int i = heap->size-1; __parent_idx(i) >= 0 && heap->array[i] < heap->array[__parent_idx(i)]; i = __parent_idx(i) )
+    for(int i = heap->size-1; __parent_idx(i) >= 0 && (*heap->compare)(heap->array[i], heap->array[__parent_idx(i)]) > 0; i = __parent_idx(i))
         __swap(heap->array, i, __parent_idx(i));
 }
 
-
-bool h_pop(Heap *heap, T *output) {
-    if(h_is_empty(*heap))
+bool maxh_pop(MaxHeap *heap, T *output) {
+    if(maxh_is_empty(*heap))
         return false;
 
     if(output)
@@ -70,9 +71,9 @@ bool h_pop(Heap *heap, T *output) {
     __set_size(heap, heap->size-1);
 
     //fix heap
-    for(int i=0; __lchild_idx(i) < heap->size && heap->array[i] > heap->array[__lchild_idx(i)] || __get_rchild_idx(i) < heap->size && heap->array[i] > heap->array[__get_rchild_idx(i)]; ) {
+    for(int i=0; __lchild_idx(i) < heap->size && (*heap->compare)(heap->array[i], heap->array[__lchild_idx(i)]) < 0 || __rchild_idx(i) < heap->size && (*heap->compare)(heap->array[i], heap->array[__get_rchild_idx(i)]) < 0; ) {
         if(__lchild_idx(i) < heap->size && __get_rchild_idx(i) < heap->size) {  //both children exist
-            if(heap->array[__lchild_idx(i)] < heap->array[__get_rchild_idx(i)] ) {
+            if((*heap->compare)(heap->array[__lchild_idx(i)], heap->array[__get_rchild_idx(i)]) > 0) {
                 swap(i, __lchild_idx(i));
                 i = __lchild_idx(i);
             }
@@ -94,9 +95,8 @@ bool h_pop(Heap *heap, T *output) {
     return true;
 }
 
-
-bool h_get_min(Heap heap, T *output) {
-    if(h_is_empty(heap))
+bool maxh_get_max(MaxHeap heap, T *output) {
+    if(maxh_is_empty(heap))
         return false;
 
     if(output)
@@ -104,12 +104,10 @@ bool h_get_min(Heap heap, T *output) {
     return true;
 }
 
-
-unsigned h_get_size(Heap heap) {
+unsigned maxh_get_size(MaxHeap heap) {
     return heap.size;
 }
 
-
-bool h_is_empty(Heap heap) {
-    return h_get_size(heap) <= 0;
+bool maxh_is_empty(MaxHeap heap) {
+    return maxh_get_size(heap) <= 0;
 }
