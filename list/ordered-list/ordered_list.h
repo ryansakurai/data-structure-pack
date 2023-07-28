@@ -1,5 +1,5 @@
 /**
- *  Linked implementation of an ordered list
+ *  Linked implementation of an ascending ordered list
  * 
  *  Author: Ryan Sakurai
  */
@@ -21,7 +21,7 @@ typedef struct OLNode {
 typedef struct OrderedList {
     OLNode *sentinel;
     unsigned size;
-    bool (*move_past)(void *a, void *b);
+    int (*compare)(T a, T b);
 } OrderedList;
 
 typedef struct OLIterator {
@@ -34,11 +34,11 @@ typedef struct OLIterator {
  * 
  * Parameters
  * - OrderedList *list
- * - bool (*move_past)(void *a, void *b): function used to sort the list (true if a must be moved past b)
+ * - int (*compare)(T a, T b): function used to compare items (positive if a is greater, 0 if equal and negative if b is greater)
  * 
  * Returns: void
  */
-void ol_init(OrderedList *list, bool (*move_past)(void *a, void *b));
+void ol_init(OrderedList *list, int (*compare)(T a, T b));
 
 /**
  * Destroys the list
@@ -181,18 +181,5 @@ bool ol_get_current_item(OLIterator iter, T *output);
  * - False, if the iterator isn't pointing to an item and it wasn't possible
  */
 bool ol_pop_current_item(OLIterator *iter, T *output);
-
-/**
- * Moves the iterator to a certain item, if it's possible to find it
- * 
- * Parameters
- * - OrderedList *iter
- * - bool (*equals)(void *a, void *b): function used to find the item
- * - T key: key to be searched for
- * 
- * Returns: bool
- * - If it was possible to find it
- */
-bool ol_search(OLIterator *iter, bool (*equals)(void *a, void *b), T key);
 
 #endif
