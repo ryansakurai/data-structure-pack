@@ -64,7 +64,6 @@ bool al_remove(ArrayList *list, unsigned index) {
     return true;
 }
 
-
 bool al_get(ArrayList list, unsigned index, T *output) {
     if(index >= list.size)
         return false;
@@ -73,11 +72,9 @@ bool al_get(ArrayList list, unsigned index, T *output) {
     return true;
 }
 
-
 unsigned al_get_size(ArrayList list) {
     return list.size;
 }
-
 
 bool al_is_empty(ArrayList list) {
     return al_get_size(list) <= 0;

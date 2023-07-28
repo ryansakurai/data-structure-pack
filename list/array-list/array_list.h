@@ -28,7 +28,6 @@ typedef struct ArrayList {
  */
 void al_init(ArrayList *list);
 
-
 /**
  * Destroys the list
  * 
@@ -38,7 +37,6 @@ void al_init(ArrayList *list);
  * Returns: void
  */
 void al_destroy(ArrayList *list);
-
 
 /**
  * Pushes an item to the list
@@ -50,7 +48,6 @@ void al_destroy(ArrayList *list);
  * Returns: void
  */
 void al_push(ArrayList *list, T data);
-
 
 /**
  * Inserts an item in a specific position
@@ -65,7 +62,6 @@ void al_push(ArrayList *list, T data);
  */
 bool al_insert(ArrayList *list, unsigned index, T data);
 
-
 /**
  * Removes an item from a specific position
  * 
@@ -77,7 +73,6 @@ bool al_insert(ArrayList *list, unsigned index, T data);
  * - If it was possible to remove the item
  */
 bool al_remove(ArrayList *list, unsigned index);
-
 
 /**
  * Stores the item from a specific position in a variable
@@ -92,7 +87,6 @@ bool al_remove(ArrayList *list, unsigned index);
  */
 bool al_get(ArrayList list, unsigned index, T *output);
 
-
 /**
  * Returns the size of the list
  * 
@@ -104,7 +98,6 @@ bool al_get(ArrayList list, unsigned index, T *output);
  */
 unsigned al_get_size(ArrayList list);
 
-
 /**
  * Returns if the list is empty
  * 
@@ -115,6 +108,5 @@ unsigned al_get_size(ArrayList list);
  * - If the list is empty
  */
 bool al_is_empty(ArrayList list);
-
 
 #endif
