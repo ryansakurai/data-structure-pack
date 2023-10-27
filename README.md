@@ -7,6 +7,7 @@ This is a pack of generic data structures implemented in C. It includes:
 - Min-heap (priority queue);
 - List - array implementation;
 - List - linked implementation;
+- Ordered list - array implementation;
 - Ordered list - linked implementation;
 - Queue - linked implementation;
 - Stack - array implementation;
