@@ -2,20 +2,20 @@
 
 This is a pack of generic data structures implemented in C. It includes:
 
-- Deque/double ended queue
+- **Deque** (double ended queue)
     - Linked implementation
-- Heap/priority queue
+- **Heap** (priority queue)
     - Array implementation
         - Min-heap
         - Max-heap
-- List
+- **List**
     - Array implementation
     - Linked implementation
-- Ordered list
+- **Ordered list**
     - Array implementation
     - Linked implementation
-- Queue
+- **Queue**
     - Linked implementation
-- Stack
+- **Stack**
     - Array implementation
     - Linked implementation
